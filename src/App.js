@@ -3,6 +3,7 @@ import 'bulma/css/bulma.css';
 import MovieTableContainer from './components/MovieTable';
 import Filter from './components/Filter';
 import movieList from './movies.json';
+import memoize from './memoize';
 
 let dedupedMovieList = [];
 movieList.forEach((movie) => {
@@ -12,7 +13,7 @@ movieList.forEach((movie) => {
 });
 let cleanedMovieList = dedupedMovieList
   .map((movie) => ({ 
-    'Title': movie['Title'], 
+    'Title': String(movie['Title']), 
     'Genre': movie['Major_Genre'] || 'Unknown', 
     'Rating': movie['IMDB_Rating'] || 0 
   }));
@@ -27,14 +28,18 @@ class App extends React.Component {
     }
   }
 
+  filterMovies = memoize((movies, filter) => movies.filter((movie) => movie['Title'].includes(filter)));
+
   render() {
+    let filteredMovies = this.filterMovies(this.state.movies, this.state.filter);
+
     return (
       <div className="container">
         <div className="columns">
           <div className="column">
             <Filter onFilter={(filter) => this.setState({filter})} />
             <MovieTableContainer
-              movies={this.state.movies}
+              movies={filteredMovies}
               sortField={this.state.sortField}
               onSort={(sortField) => this.setState({sortField})}
             />
