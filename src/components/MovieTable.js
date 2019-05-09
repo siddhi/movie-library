@@ -23,7 +23,7 @@ function ColumnHeader({ name, sorted, onClick }) {
 }
 
 
-export default function MovieTable({ movies, sortField, onSort }) {
+function MovieTable({ movies, sortField, onSort }) {
   let createColumnHeader = (field) => (
     <ColumnHeader name={field} sorted={sortField === field} onClick={() => onSort(field)} key={field} />
   );
@@ -42,5 +42,18 @@ export default function MovieTable({ movies, sortField, onSort }) {
         </tbody>
       </table>
   );
+}
+
+export default class MovieTableContainer extends React.Component {
+  shouldComponentUpdate(newProps, newState) {
+    if (this.props.movies === newProps.movies && this.props.sortField === newProps.sortField) {
+      return false;
+    }
+    return true;
+  }
+
+  render() {
+    return <MovieTable {...this.props} />
+  }
 }
 
