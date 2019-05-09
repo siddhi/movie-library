@@ -1,4 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { doSort, loadMoviesAction } from '../actions'
+import { moviesSelector } from '../store'
 
 function MovieRow({ movie, fields }) {
   return (
@@ -22,14 +25,12 @@ function ColumnHeader({ name, sorted, onClick }) {
   );  
 }
 
-
-function MovieTable({ movies, sortField, onSort }) {
+function MovieTable({ loading, movies, sortField, onSort }) {
   let createColumnHeader = (field) => (
     <ColumnHeader name={field} sorted={sortField === field} onClick={() => onSort(field)} key={field} />
   );
   let fields = ['Title', 'Genre', 'Rating'];
-  let sortedMovies = [...movies].sort((a, b) => a[sortField] < b[sortField] ? -1 : 1);
-  
+
   return (
       <table className="table is-fullwidth">
         <thead>
@@ -38,22 +39,37 @@ function MovieTable({ movies, sortField, onSort }) {
           </tr>
         </thead>
         <tbody>
-          { sortedMovies.map((movie) => <MovieRow movie={movie} key={movie['Title']} fields={fields}/>) }
+          { loading ? <tr><td>Loading...</td></tr> : movies.map((movie) => <MovieRow movie={movie} key={movie['Title']} fields={fields}/>) }
         </tbody>
       </table>
   );
 }
 
-export default class MovieTableContainer extends React.Component {
+class MovieTableWrapper extends React.Component {
   shouldComponentUpdate(newProps, newState) {
-    if (this.props.movies === newProps.movies && this.props.sortField === newProps.sortField) {
+    if (this.props.movies === newProps.movies && 
+        this.props.sortField === newProps.sortField && 
+        this.props.loading === newProps.loading) {
       return false;
     }
     return true;
+  }
+
+  componentDidMount() {
+    this.props.onInit();
   }
 
   render() {
     return <MovieTable {...this.props} />
   }
 }
+
+export default connect((state) => ({
+  movies: moviesSelector(state),
+  sortField: state.sortField,
+  loading: state.loading
+}), (dispatch) => ({
+  onSort: (column) => dispatch(doSort(column)),
+  onInit: () => dispatch(loadMoviesAction())
+}))(MovieTableWrapper);
 

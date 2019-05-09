@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { doFilter } from '../actions';
 
-export default function Filter({ filter, onFilter }) {
+function Filter({ onFilter }) {
   let submit = (e) => {
     e.preventDefault();
     onFilter(e.target.elements[0].value);
@@ -19,3 +21,7 @@ export default function Filter({ filter, onFilter }) {
     </form>
   );
 }
+
+export default connect(null, (dispatch) => ({
+  onFilter: (filter) => dispatch(doFilter(filter))
+}))(Filter);
