@@ -3,7 +3,7 @@ import React from 'react'
 function MovieRow({ movie, fields }) {
   return (
     <tr>
-      { fields.map(field => <td>{movie[field]}</td>) }
+      { fields.map(field => <td key={movie[field]}>{movie[field]}</td>) }
     </tr>
   );
 }
@@ -21,6 +21,7 @@ function ColumnHeader({ name, sorted, onClick }) {
     <td onClick={onClick}>{ name } { sorted ? <SortIcon /> : null }</td>
   );  
 }
+
 
 export default function MovieTable({ movies, sortField, onSort }) {
   let createColumnHeader = (field) => (

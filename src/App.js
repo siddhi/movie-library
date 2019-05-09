@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bulma/css/bulma.css';
-import MovieTable from './components/MovieTable';
+import MovieTableContainer from './components/MovieTable';
+import Filter from './components/Filter';
 import movieList from './movies.json';
 
 let dedupedMovieList = [];
@@ -21,7 +22,8 @@ class App extends React.Component {
     super();
     this.state = {
       movies: cleanedMovieList,
-      sortField: "Title"
+      sortField: "Title",
+      filter: ""
     }
   }
 
@@ -30,7 +32,8 @@ class App extends React.Component {
       <div className="container">
         <div className="columns">
           <div className="column">
-            <MovieTable
+            <Filter onFilter={(filter) => this.setState({filter})} />
+            <MovieTableContainer
               movies={this.state.movies}
               sortField={this.state.sortField}
               onSort={(sortField) => this.setState({sortField})}
