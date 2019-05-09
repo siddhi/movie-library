@@ -48,8 +48,7 @@ function MovieTable({ loading, movies, sortField, onSort }) {
 class MovieTableWrapper extends React.Component {
   shouldComponentUpdate(newProps, newState) {
     if (this.props.movies === newProps.movies && 
-        this.props.sortField === newProps.sortField && 
-        this.props.loading === newProps.loading) {
+        this.props.sortField === newProps.sortField) {
       return false;
     }
     return true;
