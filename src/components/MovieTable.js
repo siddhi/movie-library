@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { doSort, loadMoviesAction } from '../actions'
-import { moviesSelector } from '../store'
+import PropTypes from 'prop-types'
 
 function MovieRow({ movie, fields }) {
   return (
@@ -44,6 +44,17 @@ function MovieTable({ loading, movies, sortField, onSort }) {
       </table>
   );
 }
+
+MovieTable.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  movies: PropTypes.array.isRequired,
+  sortField: PropTypes.string,
+  onSort: PropTypes.func.isRequired
+};
+
+MovieTable.defaultProps = {
+  sortField: 'Title'
+};
 
 class MovieTableWrapper extends React.Component {
   shouldComponentUpdate(newProps, newState) {
