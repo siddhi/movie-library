@@ -22,7 +22,7 @@ function movieReducer(state=initialState, action) {
     return {...state, sortField: action.value};
   }
   if (action.type === "FILTER_CHANGE") {
-    return {...state, filter: action.value};
+    return {...state, filter: action.value, pageNum: 1};
   }
   if (action.type === "PREV_PAGE") {
     return {...state, pageNum: state.pageNum === 1 ? 1 : state.pageNum - 1};
