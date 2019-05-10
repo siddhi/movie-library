@@ -6,5 +6,8 @@ export const loadMoviesAction = () => (dispatch) => {
 };
 
 export const doSort = (column) => ({type: "SORT_CHANGE", value: column});
-
 export const doFilter = (filter) => ({type: "FILTER_CHANGE", value: filter});
+export const gotoNextPage = () => ({type: "NEXT_PAGE"});
+export const gotoPrevPage = () => ({type: "PREV_PAGE"});
+export const gotoPage = (pageNum) => ({type: "GOTO_PAGE", value: pageNum});
+

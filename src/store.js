@@ -7,7 +7,8 @@ let initialState = {
   movies: [],
   sortField: 'Title',
   loading: false,
-  filter: ""
+  filter: "",
+  pageNum: 1
 };
 
 function movieReducer(state=initialState, action) {
@@ -22,6 +23,15 @@ function movieReducer(state=initialState, action) {
   }
   if (action.type === "FILTER_CHANGE") {
     return {...state, filter: action.value};
+  }
+  if (action.type === "PREV_PAGE") {
+    return {...state, pageNum: state.pageNum === 1 ? 1 : state.pageNum - 1};
+  }
+  if (action.type === "NEXT_PAGE") {
+    return {...state, pageNum: state.pageNum + 1};
+  }
+  if (action.type === "GOTO_PAGE") {
+    return {...state, pageNum: action.value};
   }
   return state;
 }

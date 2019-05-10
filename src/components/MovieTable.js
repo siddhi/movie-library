@@ -48,7 +48,8 @@ function MovieTable({ loading, movies, sortField, onSort }) {
 class MovieTableWrapper extends React.Component {
   shouldComponentUpdate(newProps, newState) {
     if (this.props.movies === newProps.movies && 
-        this.props.sortField === newProps.sortField) {
+        this.props.sortField === newProps.sortField && 
+        this.props.loading === newProps.loading) {
       return false;
     }
     return true;
@@ -63,8 +64,7 @@ class MovieTableWrapper extends React.Component {
   }
 }
 
-export default connect((state) => ({
-  movies: moviesSelector(state),
+export default connect((state, ownProps) => ({
   sortField: state.sortField,
   loading: state.loading
 }), (dispatch) => ({
