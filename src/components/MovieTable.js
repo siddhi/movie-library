@@ -1,3 +1,5 @@
+//@flow
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { doSort, loadMoviesAction } from '../actions'
@@ -25,7 +27,20 @@ function ColumnHeader({ name, sorted, onClick }) {
   );  
 }
 
-function MovieTable({ loading, movies, sortField, onSort }) {
+type Movie = {
+  Title: string,
+  Genre: string,
+  Rating: string
+};
+
+type MovieProps = {
+  loading: boolean,
+  sortField?: string,
+  movies: Array<Movie>,
+  onSort: (column: string) => void
+}
+
+function MovieTable({ loading, movies, sortField, onSort}: MovieProps) {
   let createColumnHeader = (field) => (
     <ColumnHeader name={field} sorted={sortField === field} onClick={() => onSort(field)} key={field} />
   );
@@ -45,18 +60,15 @@ function MovieTable({ loading, movies, sortField, onSort }) {
   );
 }
 
-MovieTable.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  movies: PropTypes.array.isRequired,
-  sortField: PropTypes.string,
-  onSort: PropTypes.func.isRequired
-};
+type WrapperProps = {
+  movies: Array<Movie>,
+  sortField?: string,
+  loading: boolean,
+  onInit: () => void,
+  onSort: (column: string) => void
+}
 
-MovieTable.defaultProps = {
-  sortField: 'Title'
-};
-
-class MovieTableWrapper extends React.Component {
+class MovieTableWrapper extends React.Component<WrapperProps> {
   shouldComponentUpdate(newProps, newState) {
     if (this.props.movies === newProps.movies && 
         this.props.sortField === newProps.sortField && 
@@ -71,7 +83,7 @@ class MovieTableWrapper extends React.Component {
   }
 
   render() {
-    return <MovieTable {...this.props} />
+    return <MovieTable {...this.props}/>
   }
 }
 
